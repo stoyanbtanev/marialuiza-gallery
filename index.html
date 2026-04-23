@@ -2158,7 +2158,8 @@
     </script>
     <script>
         // Smooth Scrolling with Lenis
-        const lenis = new Lenis({
+        const isMobileScrollViewport = window.matchMedia('(max-width: 768px)').matches;
+        const lenis = isMobileScrollViewport ? null : new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             direction: 'vertical',
@@ -2170,11 +2171,29 @@
             infinite: false,
         });
 
-        function raf(time) {
-            lenis.raf(time);
+        function scrollToTarget(target, options = {}) {
+            if (lenis) {
+                lenis.scrollTo(target, options);
+                return;
+            }
+            if (typeof target === 'number') {
+                window.scrollTo({ top: target, behavior: 'smooth' });
+                return;
+            }
+            const el = typeof target === 'string' ? document.querySelector(target) : target;
+            if (!el) return;
+            const offset = typeof options.offset === 'number' ? options.offset : 0;
+            const top = el.getBoundingClientRect().top + window.scrollY + offset;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }
+
+        if (lenis) {
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
             requestAnimationFrame(raf);
         }
-        requestAnimationFrame(raf);
 
         // Preloader
         window.addEventListener('load', () => {
@@ -2306,11 +2325,11 @@
             if(menuOpen) {
                 menuBtn.classList.add('active');
                 menuOverlay.classList.add('active');
-                lenis.stop(); // Disable scrolling
+                if (lenis) lenis.stop(); // Disable scrolling
             } else {
                 menuBtn.classList.remove('active');
                 menuOverlay.classList.remove('active');
-                lenis.start(); // Enable scrolling
+                if (lenis) lenis.start(); // Enable scrolling
             }
         }
 
@@ -2323,7 +2342,7 @@
                 if(targetId.startsWith('#')) {
                     e.preventDefault();
                     setTimeout(() => {
-                        lenis.scrollTo(targetId, { offset: -100 });
+                        scrollToTarget(targetId, { offset: -100 });
                     }, 500); // wait for menu to close
                 }
             });
@@ -2337,7 +2356,7 @@
             cookieDismissed = true;
             closeCookieBar();
         });
-        scrollTopBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.1 }));
+        scrollTopBtn.addEventListener('click', () => scrollToTarget(0, { duration: 1.1 }));
         window.addEventListener('scroll', () => {
             updateScrollTopVisibility();
         }, { passive: true });
@@ -2430,13 +2449,13 @@
         function openLightbox(src) {
             lightboxImg.src = src;
             lightbox.classList.add('active');
-            lenis.stop();
+            if (lenis) lenis.stop();
         }
         
         function closeLightbox(e) {
             if (e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
-                lenis.start();
+                if (lenis) lenis.start();
                 setTimeout(() => { lightboxImg.src = ''; }, 300);
             }
         }
@@ -2444,8 +2463,6 @@
         const heroCanvas = document.getElementById('hero-canvas');
         if (heroCanvas) {
             const heroCtx = heroCanvas.getContext('2d');
-            const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
-            const heroDpr = Math.min(window.devicePixelRatio || 1, isMobileViewport ? 1.25 : 1.5);
             let heroWidth, heroHeight;
             let artPath = [];
             let velX = [];
@@ -2453,21 +2470,16 @@
             let numNodes = 0;
             const artNoise = 0.01;
             let artAnimId;
-            let heroParticleFill = 'rgba(212, 175, 55, 0.05)';
 
             function initGenerativeArt() {
-                const heroBounds = heroCanvas.parentElement.getBoundingClientRect();
-                heroWidth = Math.max(Math.round(heroBounds.width), 1);
-                heroHeight = Math.max(Math.round(heroBounds.height), 1);
-                heroCanvas.width = Math.max(Math.round(heroWidth * heroDpr), 1);
-                heroCanvas.height = Math.max(Math.round(heroHeight * heroDpr), 1);
-                heroCtx.setTransform(heroDpr, 0, 0, heroDpr, 0, 0);
+                heroWidth = heroCanvas.width = window.innerWidth;
+                heroHeight = heroCanvas.height = window.innerHeight;
                 
                 // Random dots on a small circle (21st.dev RndCircVelExpose)
                 const cx = heroWidth / 2;
                 const cy = heroHeight / 2;
                 const rad = Math.min(0.2 * heroWidth, 0.2 * heroHeight);
-                numNodes = Math.max(80, Math.min(isMobileViewport ? 140 : 220, Math.floor(heroWidth * (isMobileViewport ? 0.22 : 0.3))));
+                numNodes = Math.floor(heroWidth);
 
                 artPath = [];
                 velX = [];
@@ -2483,7 +2495,6 @@
                 // Paint base once; subsequent frames accumulate trails without clearing
                 const rootStyles = getComputedStyle(document.documentElement);
                 heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-bg').trim() || '#0a0a0a';
-                heroParticleFill = rootStyles.getPropertyValue('--hero-canvas-particle').trim() || 'rgba(212, 175, 55, 0.05)';
                 heroCtx.fillRect(0, 0, heroWidth, heroHeight);
             }
 
@@ -2491,7 +2502,8 @@
                 artAnimId = requestAnimationFrame(animateGenerativeArt);
 
                 // Low-alpha dots accumulate into smoky trails on the persistent themed canvas
-                heroCtx.fillStyle = heroParticleFill;
+                const rootStyles = getComputedStyle(document.documentElement);
+                heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-particle').trim() || 'rgba(212, 175, 55, 0.05)';
 
                 for (let i = 0; i < numNodes; i++) {
                     velX[i] += (1 - 2 * Math.random()) * artNoise;
@@ -2511,15 +2523,10 @@
                 }
             }
 
-            let lastHeroWidth = 0;
-            let lastHeroHeight = 0;
+            let lastHeroWidth = window.innerWidth;
             window.addEventListener('resize', () => {
-                const heroBounds = heroCanvas.parentElement.getBoundingClientRect();
-                const nextWidth = Math.round(heroBounds.width);
-                const nextHeight = Math.round(heroBounds.height);
-                if (nextWidth === lastHeroWidth && nextHeight === lastHeroHeight) return;
-                lastHeroWidth = nextWidth;
-                lastHeroHeight = nextHeight;
+                if (window.innerWidth === lastHeroWidth) return;
+                lastHeroWidth = window.innerWidth;
                 cancelAnimationFrame(artAnimId);
                 artAnimId = null;
                 initGenerativeArt();
