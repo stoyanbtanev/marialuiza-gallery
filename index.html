@@ -75,7 +75,7 @@
 
         html {
             scroll-behavior: initial;
-            overflow-x: hidden;
+            overflow-x: clip;
         }
 
         body {
@@ -84,7 +84,7 @@
             font-family: var(--font-body);
             font-size: 16px;
             line-height: 1.6;
-            overflow-x: hidden;
+            overflow-x: clip;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -687,6 +687,7 @@
                 position: sticky;
                 top: 100px;
                 align-self: start;
+                will-change: transform;
             }
         }
 
@@ -793,71 +794,55 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
             margin-top: 1.5rem;
-            max-width: 340px;
+            width: 100%;
             position: relative;
         }
 
         .footer-map-frame {
             width: 100%;
-            height: 190px;
+            height: 220px;
             border: 0;
             display: block;
-            filter: grayscale(1) contrast(1.05) brightness(0.9);
+            filter: grayscale(0.9) contrast(1.05) brightness(0.92);
             background: #111;
+            transition: filter 0.4s ease;
         }
-
-        .footer-map-placeholder {
-            width: 100%;
-            height: 190px;
-
-            border: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28)),
-                radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.22), transparent 38%),
-                #171717;
-            color: #fff;
-            font: inherit;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .footer-map-placeholder span {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.8rem 1rem;
-            border-radius: 999px;
-            background: rgba(0, 0, 0, 0.28);
-            border: 1px solid rgba(212, 175, 55, 0.28);
+        .footer-map-card:hover .footer-map-frame,
+        .footer-map-card:focus-within .footer-map-frame {
+            filter: grayscale(0) contrast(1) brightness(1);
         }
 
         .footer-map-meta {
-            padding: 1rem 1.1rem 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            flex-wrap: wrap;
         }
 
         .footer-map-meta strong {
-            display: block;
             color: #fff;
-            margin-bottom: 0.45rem;
             font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .footer-map-meta span {
-            display: block;
             color: #9c9c9c;
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
         }
 
         .footer-map-link {
-            display: inline-block;
             color: var(--accent-color);
             border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .footer-map-frame { height: 180px; }
+            .footer-map-meta { padding: 0.6rem 0.85rem; font-size: 0.88rem; }
         }
 
         .footer-bottom {
@@ -2117,14 +2102,10 @@
                 </div>
                 <div class="footer-col">
                     <div class="footer-map-card">
-                        <button class="footer-map-placeholder" type="button" data-map-load aria-label="Load Google Map">
-                            <span>Зареди картата</span>
-                        </button>
-                        <iframe class="footer-map-frame" data-src="https://www.google.com/maps?q=Arsenal%20of%20art%20gallery%2C%204%20Magura%20Str%2C%20Plovdiv%204000%2C%20Bulgaria&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Arsenal of Art Gallery Map" hidden></iframe>
+                        <iframe class="footer-map-frame" data-src="https://www.google.com/maps?q=Arsenal%20of%20art%20gallery%2C%204%20Magura%20Str%2C%20Plovdiv%204000%2C%20Bulgaria&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Arsenal of Art Gallery Map"></iframe>
                         <div class="footer-map-meta">
-                            <strong>Arsenal of Art Gallery</strong>
-                            <span>ул. Магура 4, 4000 Пловдив</span>
-                            <a class="footer-map-link" href="https://www.google.com/maps/place/Arsenal+of+art+gallery/@42.1497801,24.7449042,17z/data=!3m1!4b1!4m6!3m5!1s0x14acd1bd05a40513:0x1eed8000db2521cc!8m2!3d42.1497801!4d24.7474791!16s%2Fg%2F11cn7wcg6l?hl=bg&authuser=0&entry=ttu" target="_blank">Отвори в Google Maps</a>
+                            <div><strong>Arsenal of Art Gallery</strong><span>ул. Магура 4, Пловдив</span></div>
+                            <a class="footer-map-link" href="https://www.google.com/maps/place/Arsenal+of+art+gallery/@42.1497801,24.7449042,17z/data=!3m1!4b1!4m6!3m5!1s0x14acd1bd05a40513:0x1eed8000db2521cc!8m2!3d42.1497801!4d24.7474791!16s%2Fg%2F11cn7wcg6l?hl=bg&authuser=0&entry=ttu" target="_blank" rel="noopener">Отвори в Google Maps ↗</a>
                         </div>
                     </div>
                 </div>
@@ -2668,11 +2649,10 @@
             } catch (e) {}
 
             const mapFrame = document.querySelector('.footer-map-frame');
-            const mapPlaceholder = document.querySelector('[data-map-load]');
+            const mapPlaceholder = null;
             function loadFooterMap() {
                 if (!mapFrame || mapFrame.src) return;
                 mapFrame.src = mapFrame.dataset.src;
-                mapFrame.hidden = false;
 
                 if (mapPlaceholder) mapPlaceholder.hidden = true;
             }
