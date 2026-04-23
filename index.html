@@ -729,36 +729,46 @@
         /* Contact / Footer */
         footer {
             background-color: #050505;
-            padding: 6rem 4rem 2rem;
+            padding: 3rem 4rem 1.5rem;
             margin-top: 4rem;
             border-top: 1px solid #1a1a1a;
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 0.95fr 1fr 1.35fr;
-            gap: 4rem;
-            margin-bottom: 4rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
             align-items: start;
         }
 
         .footer-col h3 {
             font-family: var(--font-heading);
             color: var(--accent-color);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
         }
 
         .footer-col p, .footer-col a {
             display: block;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.4rem;
             color: #aaa;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .footer-col a:hover {
             color: #fff;
             padding-left: 5px;
+        }
+
+        .footer-brand p {
+            margin-top: 0.5rem;
+            max-width: 280px;
+        }
+
+        .footer-contact h3 {
+            margin-top: 1.5rem;
         }
 
         .footer-map-card {
@@ -803,32 +813,12 @@
             border-bottom: 1px solid rgba(212, 175, 55, 0.45);
         }
 
-        .social-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .social-links a {
-            padding: 0.5rem 1rem;
-            border: 1px solid #333;
-            border-radius: 4px;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            border-color: var(--accent-color);
-            background: var(--accent-dim);
-            padding-left: 1rem;
-        }
-
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
+            padding-top: 1.25rem;
             border-top: 1px solid #1a1a1a;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         /* Cookie Bar */
@@ -1071,6 +1061,81 @@
             border-color: rgba(212, 175, 55, 0.48);
         }
 
+        /* Hero / Floating / Footer Socials */
+        .hero-socials {
+            display: inline-flex;
+            gap: 0.75rem;
+            margin-top: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .hero-socials a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            background: rgba(12, 12, 12, 0.75);
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: all 0.35s ease;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(6px);
+        }
+
+        .hero-socials a:hover {
+            background: var(--accent-color);
+            color: #1a1a1a;
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.25);
+        }
+
+        .hero-socials svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .hero-socials.is-floating {
+            position: fixed;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0;
+            z-index: 998;
+        }
+
+        .hero-socials.is-footer {
+            position: fixed;
+            left: 1.5rem;
+            transform: translateY(0);
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0;
+            z-index: 998;
+        }
+
+        [data-theme="light"] .hero-socials a {
+            background: rgba(252, 247, 236, 0.85);
+            border-color: var(--accent-glow);
+            box-shadow: 0 8px 22px var(--shadow-soft);
+            color: #6b5b2e;
+        }
+
+        [data-theme="light"] .hero-socials a:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
             .intro, .artist { grid-template-columns: 1fr; gap: 3rem; }
@@ -1079,7 +1144,7 @@
             .masonry-grid { column-count: 2; }
             .features-showcase { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
             nav, section, footer { padding-left: 2rem; padding-right: 2rem; }
         }
 
@@ -1092,6 +1157,18 @@
             .feature-highlight h3 { font-size: 1.6rem; }
             .features-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-socials.is-floating,
+            .hero-socials.is-footer {
+                left: 1rem;
+            }
+            .hero-socials a {
+                width: 40px;
+                height: 40px;
+            }
+            .hero-socials svg {
+                width: 18px;
+                height: 18px;
+            }
             .hero-subtitle { font-size: 0.9rem; }
             .hero-description { font-size: 0.98rem; }
             .gallery-film-copy { text-align: center; padding: 0; }
@@ -1174,7 +1251,7 @@
         .menu-overlay, .feature-card, .feature-highlight, .gallery-film,
         .footer-map-card, .footer-map-frame, .cookie-bar, .cookie-close,
         .cookie-btn, .cookie-option, .cookie-preferences,
-        .scroll-top-btn, .cv-timeline, .social-links a,
+        .scroll-top-btn, .cv-timeline,
         .intro-image, .masonry-item, .mouse, .wheel,
         .hero-logo-large, .nav-logo img, .loader-logo, .footer-col img,
         h1, h2, h3, h4, h5, h6, p, a, span, strong, li, button, input {
@@ -1252,8 +1329,6 @@
         [data-theme="light"] .footer-map-frame { filter: grayscale(0.2) contrast(1) brightness(1); }
         [data-theme="light"] .footer-map-meta strong { color: var(--text-color); }
         [data-theme="light"] .footer-map-meta span { color: var(--text-dim); }
-        [data-theme="light"] .social-links a { border-color: var(--border); }
-
         [data-theme="light"] .cookie-bar {
             background: rgba(252, 247, 236, 0.96);
             border-color: var(--border-soft);
@@ -1536,6 +1611,17 @@
             <img src="images/logolong.png" alt="Arsenal of Art Gallery" class="hero-logo-large">
             <div class="hero-subtitle">Gallery • Jazz • Piano Bar</div>
             <p class="hero-description">Съвременно пространство в Пловдив за изложби, камерни музикални вечери и творчески срещи, където атмосферата е част от самото изкуство.</p>
+            <div class="hero-socials" id="heroSocials">
+                <a href="https://www.facebook.com/people/Arsenal-of-Art/100063465643334/" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                </a>
+                <a href="https://instagram.com/gescheff" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </a>
+                <a href="https://angel-gescheff.livejournal.com/" target="_blank" rel="noopener" aria-label="LiveJournal">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="14 2 14 8 20 8" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="10" y1="9" x2="8" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -1821,23 +1907,16 @@
     <footer id="contact">
         <div class="container">
             <div class="footer-grid">
-                <div class="footer-col">
-                    <img src="images/logo.png" alt="Arsenal of Art" style="width: 110px; margin-bottom: 1.5rem; filter: invert(1); opacity: 0.8;">
-                    <p>Галерия, джаз, пиано бар.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Контакти</h3>
-                    <p>4 Magura Str<br>Plovdiv 4000<br>BULGARIA</p>
-                    <a href="tel:+359898917070">+359 898 917 070</a>
-                    <a href="mailto:arsenalofart@mail.ru">arsenalofart@mail.ru</a>
-                </div>
-                <div class="footer-col">
-                    <h3>Следвайте ни</h3>
-                    <div class="social-links">
-                        <a href="https://www.facebook.com/people/Arsenal-of-Art/100063465643334/" target="_blank">Facebook</a>
-                        <a href="https://instagram.com/gescheff" target="_blank">Instagram</a>
-                        <a href="https://angel-gescheff.livejournal.com/" target="_blank">LiveJournal</a>
+                <div class="footer-col footer-brand">
+                    <img src="images/logo.png" alt="Arsenal of Art" style="width: 90px; margin-bottom: 0.75rem; filter: invert(1); opacity: 0.8;">
+                    <p>Галерия, джаз, пиано бар.<br>4 Magura Str, Plovdiv 4000, Bulgaria</p>
+                    <div class="footer-contact">
+                        <h3>Контакти</h3>
+                        <a href="tel:+359898917070">+359 898 917 070</a>
+                        <a href="mailto:arsenalofart@mail.ru">arsenalofart@mail.ru</a>
                     </div>
+                </div>
+                <div class="footer-col">
                     <div class="footer-map-card">
                         <iframe class="footer-map-frame" src="https://www.google.com/maps?q=Arsenal%20of%20art%20gallery%2C%204%20Magura%20Str%2C%20Plovdiv%204000%2C%20Bulgaria&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Arsenal of Art Gallery Map"></iframe>
                         <div class="footer-map-meta">
@@ -1906,7 +1985,7 @@
         </span>
     </button>
     <button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Към началото">↑</button>
-    
+
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close">&times;</span>
@@ -1974,6 +2053,8 @@
         const cookieAnalytics = document.getElementById('cookieAnalytics');
         const cookieMarketing = document.getElementById('cookieMarketing');
         const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const heroSocials = document.getElementById('heroSocials');
+        const footerEl = document.querySelector('footer');
         let menuOpen = false;
         let cookieDismissed = false;
 
@@ -2067,6 +2148,27 @@
             scrollTopBtn.classList.toggle('show', shouldShow);
         }
 
+        function updateSocialsPosition() {
+            if (!heroSocials || !footerEl) return;
+            const heroRect = document.querySelector('.hero').getBoundingClientRect();
+            const footerRect = footerEl.getBoundingClientRect();
+            const socialHeight = heroSocials.offsetHeight;
+
+            if (heroRect.bottom > socialHeight + 40) {
+                heroSocials.classList.remove('is-floating', 'is-footer');
+                heroSocials.style.top = '';
+            } else if (footerRect.top < window.innerHeight) {
+                heroSocials.classList.remove('is-floating');
+                heroSocials.classList.add('is-footer');
+                const topPos = footerRect.top - socialHeight - 20;
+                heroSocials.style.top = `${Math.max(topPos, 10)}px`;
+            } else {
+                heroSocials.classList.remove('is-footer');
+                heroSocials.classList.add('is-floating');
+                heroSocials.style.top = '';
+            }
+        }
+
         function toggleMenu() {
             menuOpen = !menuOpen;
             if(menuOpen) {
@@ -2104,7 +2206,10 @@
             closeCookieBar();
         });
         scrollTopBtn.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.1 }));
-        window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
+        window.addEventListener('scroll', () => {
+            updateScrollTopVisibility();
+            updateSocialsPosition();
+        }, { passive: true });
 
         // ========== Theme toggle ==========
         const themeToggle = document.getElementById('themeToggle');
@@ -2180,6 +2285,7 @@
 
             initCookieConsent();
             updateScrollTopVisibility();
+            updateSocialsPosition();
         }
 
         // Cookie Bar logic
@@ -2273,21 +2379,32 @@
             const heroSection = document.querySelector('.hero');
             if (heroSection) {
                 heroSection.style.cursor = 'pointer';
-                let tStartX = 0, tStartY = 0, tStartT = 0, tMoved = false, tActive = false;
+                let tStartX = 0, tStartY = 0, tMoved = false, touchEligible = false, touchActive = false;
                 heroSection.addEventListener('touchstart', (e) => {
                     const t = e.touches[0];
                     tStartX = t.clientX; tStartY = t.clientY;
-                    tStartT = Date.now(); tMoved = false; tActive = true;
+                    tMoved = false; touchEligible = false; touchActive = true;
                 }, { passive: true });
                 heroSection.addEventListener('touchmove', (e) => {
                     const t = e.touches[0];
                     if (Math.abs(t.clientX - tStartX) > 10 || Math.abs(t.clientY - tStartY) > 10) tMoved = true;
                 }, { passive: true });
+                heroSection.addEventListener('touchend', () => {
+                    touchEligible = !tMoved;
+                    touchActive = false;
+                }, { passive: true });
+                heroSection.addEventListener('touchcancel', () => {
+                    tMoved = true;
+                    touchEligible = false;
+                    touchActive = false;
+                }, { passive: true });
                 heroSection.addEventListener('click', () => {
-                    if (tActive) {
-                        const dt = Date.now() - tStartT;
-                        tActive = false;
-                        if (tMoved || dt > 600) return;
+                    if (touchActive) {
+                        return;
+                    }
+                    if ('ontouchstart' in window) {
+                        if (!touchEligible) return;
+                        touchEligible = false;
                     }
                     cancelAnimationFrame(artAnimId);
                     initGenerativeArt();
