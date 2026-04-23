@@ -1445,6 +1445,34 @@
         @media (max-width: 768px) {
             .theme-toggle { right: 1rem; bottom: 4.75rem; width: 58px; height: 58px; }
             .theme-toggle .orb { width: 32px; height: 32px; }
+
+            .cv-timeline {
+                padding-left: 1.5rem;
+            }
+            .cv-item {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 1.75rem;
+                font-size: 0.95rem;
+                line-height: 1.55;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+            }
+            .cv-item::before {
+                left: -1.85rem;
+                top: 0.55rem;
+                width: 10px;
+                height: 10px;
+            }
+            .cv-year {
+                display: block;
+                margin: 0 0 0.35rem 0;
+                font-size: 0.8rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                line-height: 1;
+            }
         }
     </style>
 </head>
