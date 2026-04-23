@@ -655,10 +655,13 @@
             transition: transform 0.6s ease;
         }
 
-        .masonry-item:hover img {
-            transform: scale(1.03);
-            filter: brightness(0.8);
+        @media (hover: hover) {
+            .masonry-item:hover img {
+                transform: scale(1.03);
+                filter: brightness(0.8);
+            }
         }
+        .masonry-item { contain: layout paint; }
 
         /* Artist Section */
         .artist {
@@ -1182,7 +1185,7 @@
 
         @media (max-width: 768px) {
             .masonry-grid { column-count: 1; }
-            .hero { min-height: 100svh; height: calc(var(--hero-lock-h, 100) * 1px); padding-top: 0; }
+            .hero { height: calc(var(--hero-lock-h, 100) * 1px); min-height: calc(var(--hero-lock-h, 100) * 1px); padding-top: 0; }
             nav {
                 top: 0.75rem;
                 left: 0.75rem;
@@ -1503,7 +1506,9 @@
         [data-theme="light"] .gallery-film-video { box-shadow: 0 20px 50px var(--shadow-soft); }
         [data-theme="light"] .intro-image { box-shadow: 0 20px 50px var(--shadow-soft); }
 
-        [data-theme="light"] .masonry-item:hover img { filter: brightness(0.95); }
+        @media (hover: hover) {
+            [data-theme="light"] .masonry-item:hover img { filter: brightness(0.95); }
+        }
 
         [data-theme="light"] .cv-section-title { color: var(--text-color); }
         [data-theme="light"] .cv-timeline { border-left-color: rgba(22,19,13,0.22); }
@@ -1888,26 +1893,26 @@
             </div>
         </div>
         <div class="masonry-grid">
-            <div class="masonry-item gsap-fade-up"><img src="images/image01.webp" alt="Art piece" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-06.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/image03.webp" alt="Ikar – Скални рисунки" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-09.webp" alt="Gallery interior" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/image06.webp" alt="Abstract art" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/exhibition.webp" alt="Exhibition" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-01.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-02.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-03.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-04.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-05.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-07.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-08.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-10.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/feature-highlight.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-11.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-12.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-13.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-14.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
-            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-15.webp" alt="Gallery event" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/image01.webp" alt="Art piece" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-06.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/image03.webp" alt="Ikar – Скални рисунки" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-09.webp" alt="Gallery interior" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/image06.webp" alt="Abstract art" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/exhibition.webp" alt="Exhibition" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-01.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-02.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-03.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-04.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-05.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-07.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-08.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-10.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/feature-highlight.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-11.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-12.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-13.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-14.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
+            <div class="masonry-item gsap-fade-up"><img src="images/gallery-event-15.webp" alt="Gallery event" loading="lazy" decoding="async" onclick="openLightbox(this.src)"></div>
         </div>
     </section>
 
@@ -2401,8 +2406,14 @@
             closeCookieBar();
         });
         scrollTopBtn.addEventListener('click', () => scrollToTarget(0, { duration: 1.1 }));
+        let scrollRafPending = false;
         window.addEventListener('scroll', () => {
-            updateScrollTopVisibility();
+            if (scrollRafPending) return;
+            scrollRafPending = true;
+            requestAnimationFrame(() => {
+                updateScrollTopVisibility();
+                scrollRafPending = false;
+            });
         }, { passive: true });
 
         // ========== Theme toggle ==========
@@ -2437,33 +2448,29 @@
             gsap.fromTo('.hero-subtitle', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, delay: 0.4, ease: "power3.out" });
             gsap.fromTo('.hero-description', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, delay: 0.55, ease: "power3.out" });
             
-            // Generic Fade Up
+            // Generic Fade Up — use ScrollTrigger.batch so masonry/gallery
+            // items share a single observer instead of one trigger per node.
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
-            const fadeUps = document.querySelectorAll('.gsap-fade-up');
-            fadeUps.forEach(elem => {
+            const fadeUps = [];
+            document.querySelectorAll('.gsap-fade-up').forEach(elem => {
                 if (isMobile && elem.closest('#artist')) {
                     gsap.set(elem, { clearProps: 'all', opacity: 1, y: 0 });
                     return;
                 }
-                // On mobile, skip per-item fade-up for cv-items to avoid
-                // stacking dozens of ScrollTriggers (causes scroll jank on
-                // Chrome/Firefox Android; Safari tolerates it).
                 if (isMobile && elem.classList.contains('cv-item')) {
                     gsap.set(elem, { clearProps: 'all' });
                     return;
                 }
-                gsap.fromTo(elem, { y: 40, opacity: 0 }, {
-                    scrollTrigger: {
-                        trigger: elem,
-                        start: "top 85%",
-                        toggleActions: "play none none reverse"
-                    },
-                    y: 0,
-                    opacity: 1,
-                    duration: 1,
-                    ease: "power2.out"
-                });
+                fadeUps.push(elem);
             });
+            if (fadeUps.length) {
+                gsap.set(fadeUps, { y: 40, opacity: 0 });
+                ScrollTrigger.batch(fadeUps, {
+                    start: "top 85%",
+                    onEnter: batch => gsap.to(batch, { y: 0, opacity: 1, duration: 1, stagger: 0.08, ease: "power2.out", overwrite: true }),
+                    onLeaveBack: batch => gsap.to(batch, { y: 40, opacity: 0, duration: 0.6, ease: "power2.in", overwrite: true })
+                });
+            }
 
             // Fade Left / Right
             gsap.fromTo('.gsap-fade-left', { x: -50, opacity: 0 }, {
@@ -2524,7 +2531,9 @@
                 const cx = heroWidth / 2;
                 const cy = heroHeight / 2;
                 const rad = Math.min(0.2 * heroWidth, 0.2 * heroHeight);
-                numNodes = Math.floor(heroWidth);
+                const isSmallViewport = window.matchMedia('(max-width: 768px)').matches;
+                const cap = isSmallViewport ? 220 : 500;
+                numNodes = Math.min(Math.floor(heroWidth), cap);
 
                 artPath = [];
                 velX = [];
@@ -2565,26 +2574,38 @@
                 }
             }
 
-            // Lock hero height on mobile so browser-chrome show/hide never causes reflow
+            // Lock hero height on mobile so browser-chrome show/hide never causes reflow.
+            // Use the LARGEST viewport height seen (address bar hidden) so content never
+            // reflows when the URL bar animates — Chrome/Firefox Android jank fix.
             const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
-            function getLockedHeroHeight() {
+            let lockedMaxHeight = 0;
+            function currentVH() {
                 return Math.round((window.visualViewport && window.visualViewport.height) || window.innerHeight);
             }
-            if (isMobileViewport) {
-                document.documentElement.style.setProperty('--hero-lock-h', getLockedHeroHeight());
+            function setHeroLock() {
+                const h = currentVH();
+                if (h > lockedMaxHeight) {
+                    lockedMaxHeight = h;
+                    document.documentElement.style.setProperty('--hero-lock-h', lockedMaxHeight);
+                }
             }
+            if (isMobileViewport) setHeroLock();
 
             let lastHeroWidth = window.innerWidth;
+            let resizeDebounce;
             window.addEventListener('resize', () => {
                 if (window.innerWidth === lastHeroWidth) return;
                 lastHeroWidth = window.innerWidth;
-                if (isMobileViewport) {
-                    document.documentElement.style.setProperty('--hero-lock-h', getLockedHeroHeight());
-                }
-                cancelAnimationFrame(artAnimId);
-                artAnimId = null;
-                initGenerativeArt();
-                animateGenerativeArt();
+                // width changed = orientation/real resize — reset the lock
+                lockedMaxHeight = 0;
+                if (isMobileViewport) setHeroLock();
+                clearTimeout(resizeDebounce);
+                resizeDebounce = setTimeout(() => {
+                    cancelAnimationFrame(artAnimId);
+                    artAnimId = null;
+                    initGenerativeArt();
+                    animateGenerativeArt();
+                }, 150);
             });
 
             const heroSection = document.querySelector('.hero');
