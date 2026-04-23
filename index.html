@@ -1182,7 +1182,7 @@
 
         @media (max-width: 768px) {
             .masonry-grid { column-count: 1; }
-            .hero { min-height: 100svh; padding-top: 0; }
+            .hero { min-height: 100svh; height: calc(var(--hero-lock-h, 100) * 1px); padding-top: 0; }
             nav {
                 top: 0.75rem;
                 left: 0.75rem;
@@ -2516,8 +2516,9 @@
             let artAnimId;
 
             function initGenerativeArt() {
-                heroWidth = heroCanvas.width = window.innerWidth;
-                heroHeight = heroCanvas.height = window.innerHeight;
+                const hero = heroCanvas.parentElement;
+                heroWidth = heroCanvas.width = hero.offsetWidth;
+                heroHeight = heroCanvas.height = hero.offsetHeight;
                 
                 // Random dots on a small circle (21st.dev RndCircVelExpose)
                 const cx = heroWidth / 2;
@@ -2536,10 +2537,6 @@
                     velY.push(0);
                 }
 
-                // Paint base once; subsequent frames accumulate trails without clearing
-                const rootStyles = getComputedStyle(document.documentElement);
-                heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-bg').trim() || '#0a0a0a';
-                heroCtx.fillRect(0, 0, heroWidth, heroHeight);
             }
 
             function animateGenerativeArt() {
@@ -2547,6 +2544,7 @@
 
                 // Low-alpha dots accumulate into smoky trails on the persistent themed canvas
                 const rootStyles = getComputedStyle(document.documentElement);
+
                 heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-particle').trim() || 'rgba(212, 175, 55, 0.05)';
 
                 for (let i = 0; i < numNodes; i++) {
@@ -2567,10 +2565,22 @@
                 }
             }
 
+            // Lock hero height on mobile so browser-chrome show/hide never causes reflow
+            const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+            function getLockedHeroHeight() {
+                return Math.round((window.visualViewport && window.visualViewport.height) || window.innerHeight);
+            }
+            if (isMobileViewport) {
+                document.documentElement.style.setProperty('--hero-lock-h', getLockedHeroHeight());
+            }
+
             let lastHeroWidth = window.innerWidth;
             window.addEventListener('resize', () => {
                 if (window.innerWidth === lastHeroWidth) return;
                 lastHeroWidth = window.innerWidth;
+                if (isMobileViewport) {
+                    document.documentElement.style.setProperty('--hero-lock-h', getLockedHeroHeight());
+                }
                 cancelAnimationFrame(artAnimId);
                 artAnimId = null;
                 initGenerativeArt();
@@ -2582,8 +2592,11 @@
                 let tStartX = 0, tStartY = 0, tMoved = false, touchEligible = false, touchActive = false;
                 heroSection.addEventListener('touchstart', (e) => {
                     const t = e.touches[0];
-                    tStartX = t.clientX; tStartY = t.clientY;
-                    tMoved = false; touchEligible = false; touchActive = true;
+                    tStartX = t.clientX;
+                    tStartY = t.clientY;
+                    tMoved = false;
+                    touchEligible = false;
+                    touchActive = true;
                 }, { passive: true });
                 heroSection.addEventListener('touchmove', (e) => {
                     const t = e.touches[0];
@@ -2639,6 +2652,7 @@
                 if (!mapFrame || mapFrame.src) return;
                 mapFrame.src = mapFrame.dataset.src;
                 mapFrame.hidden = false;
+
                 if (mapPlaceholder) mapPlaceholder.hidden = true;
             }
             if (mapPlaceholder) {
