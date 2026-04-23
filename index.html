@@ -250,7 +250,8 @@
         /* Hero Section */
         .hero {
             position: relative;
-            height: 100svh;
+            min-height: 100svh;
+            height: 100dvh;
             width: 100%;
             display: flex;
             align-items: center;
@@ -266,11 +267,18 @@
             text-align: center;
             max-width: 900px;
             padding: 0 2rem;
+            width: min(100%, 900px);
         }
 
         .hero-logo-large {
             max-width: 600px;
             width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            aspect-ratio: 3.2 / 1;
+            height: auto;
+            object-fit: contain;
             margin-bottom: 1.5rem;
             filter: invert(1);
             opacity: 1;
@@ -784,6 +792,7 @@
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
             margin-top: 1.5rem;
             max-width: 340px;
+            position: relative;
         }
 
         .footer-map-frame {
@@ -792,6 +801,37 @@
             border: 0;
             display: block;
             filter: grayscale(1) contrast(1.05) brightness(0.9);
+            background: #111;
+        }
+
+        .footer-map-placeholder {
+            width: 100%;
+            height: 190px;
+
+            border: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.28)),
+                radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.22), transparent 38%),
+                #171717;
+            color: #fff;
+            font: inherit;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .footer-map-placeholder span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.28);
+            border: 1px solid rgba(212, 175, 55, 0.28);
         }
 
         .footer-map-meta {
@@ -927,6 +967,11 @@
             padding: 0;
             cursor: pointer;
             font-family: var(--font-body);
+        }
+
+        .cookie-links a:hover {
+            color: #fff;
+            padding-left: 5px;
         }
 
         .cookie-preferences {
@@ -1332,6 +1377,7 @@
             z-index: 0;
             pointer-events: none;
             display: block;
+            contain: strict;
         }
         .hero-content { position: relative; z-index: 2; }
 
@@ -1723,7 +1769,7 @@
     <header class="hero">
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
         <div class="hero-content">
-            <img src="images/logolong.png" alt="Arsenal of Art Gallery" class="hero-logo-large">
+            <img src="images/logolong.png" alt="Arsenal of Art Gallery" class="hero-logo-large" fetchpriority="high" decoding="async">
             <div class="hero-subtitle">Gallery • Jazz • Piano Bar</div>
             <p class="hero-description">Съвременно пространство в Пловдив за изложби, камерни музикални вечери и творчески срещи, където атмосферата е част от самото изкуство.</p>
         </div>
@@ -2022,7 +2068,10 @@
                 </div>
                 <div class="footer-col">
                     <div class="footer-map-card">
-                        <iframe class="footer-map-frame" src="https://www.google.com/maps?q=Arsenal%20of%20art%20gallery%2C%204%20Magura%20Str%2C%20Plovdiv%204000%2C%20Bulgaria&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Arsenal of Art Gallery Map"></iframe>
+                        <button class="footer-map-placeholder" type="button" data-map-load aria-label="Load Google Map">
+                            <span>Зареди картата</span>
+                        </button>
+                        <iframe class="footer-map-frame" data-src="https://www.google.com/maps?q=Arsenal%20of%20art%20gallery%2C%204%20Magura%20Str%2C%20Plovdiv%204000%2C%20Bulgaria&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Arsenal of Art Gallery Map" hidden></iframe>
                         <div class="footer-map-meta">
                             <strong>Arsenal of Art Gallery</strong>
                             <span>ул. Магура 4, 4000 Пловдив</span>
@@ -2395,6 +2444,8 @@
         const heroCanvas = document.getElementById('hero-canvas');
         if (heroCanvas) {
             const heroCtx = heroCanvas.getContext('2d');
+            const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+            const heroDpr = Math.min(window.devicePixelRatio || 1, isMobileViewport ? 1.25 : 1.5);
             let heroWidth, heroHeight;
             let artPath = [];
             let velX = [];
@@ -2402,16 +2453,21 @@
             let numNodes = 0;
             const artNoise = 0.01;
             let artAnimId;
+            let heroParticleFill = 'rgba(212, 175, 55, 0.05)';
 
             function initGenerativeArt() {
-                heroWidth = heroCanvas.width = window.innerWidth;
-                heroHeight = heroCanvas.height = window.innerHeight;
+                const heroBounds = heroCanvas.parentElement.getBoundingClientRect();
+                heroWidth = Math.max(Math.round(heroBounds.width), 1);
+                heroHeight = Math.max(Math.round(heroBounds.height), 1);
+                heroCanvas.width = Math.max(Math.round(heroWidth * heroDpr), 1);
+                heroCanvas.height = Math.max(Math.round(heroHeight * heroDpr), 1);
+                heroCtx.setTransform(heroDpr, 0, 0, heroDpr, 0, 0);
                 
                 // Random dots on a small circle (21st.dev RndCircVelExpose)
                 const cx = heroWidth / 2;
                 const cy = heroHeight / 2;
                 const rad = Math.min(0.2 * heroWidth, 0.2 * heroHeight);
-                numNodes = Math.floor(heroWidth);
+                numNodes = Math.max(80, Math.min(isMobileViewport ? 140 : 220, Math.floor(heroWidth * (isMobileViewport ? 0.22 : 0.3))));
 
                 artPath = [];
                 velX = [];
@@ -2427,6 +2483,7 @@
                 // Paint base once; subsequent frames accumulate trails without clearing
                 const rootStyles = getComputedStyle(document.documentElement);
                 heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-bg').trim() || '#0a0a0a';
+                heroParticleFill = rootStyles.getPropertyValue('--hero-canvas-particle').trim() || 'rgba(212, 175, 55, 0.05)';
                 heroCtx.fillRect(0, 0, heroWidth, heroHeight);
             }
 
@@ -2434,8 +2491,7 @@
                 artAnimId = requestAnimationFrame(animateGenerativeArt);
 
                 // Low-alpha dots accumulate into smoky trails on the persistent themed canvas
-                const rootStyles = getComputedStyle(document.documentElement);
-                heroCtx.fillStyle = rootStyles.getPropertyValue('--hero-canvas-particle').trim() || 'rgba(212, 175, 55, 0.05)';
+                heroCtx.fillStyle = heroParticleFill;
 
                 for (let i = 0; i < numNodes; i++) {
                     velX[i] += (1 - 2 * Math.random()) * artNoise;
@@ -2455,10 +2511,15 @@
                 }
             }
 
-            let lastHeroWidth = window.innerWidth;
+            let lastHeroWidth = 0;
+            let lastHeroHeight = 0;
             window.addEventListener('resize', () => {
-                if (window.innerWidth === lastHeroWidth) return;
-                lastHeroWidth = window.innerWidth;
+                const heroBounds = heroCanvas.parentElement.getBoundingClientRect();
+                const nextWidth = Math.round(heroBounds.width);
+                const nextHeight = Math.round(heroBounds.height);
+                if (nextWidth === lastHeroWidth && nextHeight === lastHeroHeight) return;
+                lastHeroWidth = nextWidth;
+                lastHeroHeight = nextHeight;
                 cancelAnimationFrame(artAnimId);
                 artAnimId = null;
                 initGenerativeArt();
@@ -2502,11 +2563,6 @@
                 });
             }
 
-            setTimeout(() => {
-                initGenerativeArt();
-                animateGenerativeArt();
-            }, 800);
-
             // Pause expensive canvas when hero is off-screen to free GPU/CPU for scrolling
             let heroObserver;
             try {
@@ -2524,6 +2580,31 @@
                 }, { threshold: 0 });
                 if (heroSection) heroObserver.observe(heroSection);
             } catch (e) {}
+
+            const mapFrame = document.querySelector('.footer-map-frame');
+            const mapPlaceholder = document.querySelector('[data-map-load]');
+            function loadFooterMap() {
+                if (!mapFrame || mapFrame.src) return;
+                mapFrame.src = mapFrame.dataset.src;
+                mapFrame.hidden = false;
+                if (mapPlaceholder) mapPlaceholder.hidden = true;
+            }
+            if (mapPlaceholder) {
+                mapPlaceholder.addEventListener('click', loadFooterMap, { passive: true });
+                mapPlaceholder.addEventListener('touchstart', loadFooterMap, { passive: true, once: true });
+            }
+            if (mapFrame && 'IntersectionObserver' in window) {
+                const mapObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        loadFooterMap();
+                        observer.disconnect();
+                    });
+                }, { rootMargin: '300px 0px' });
+                mapObserver.observe(mapFrame.closest('.footer-map-card'));
+            } else {
+                loadFooterMap();
+            }
 
             // Expose for theme-change reroll so canvas picks up the new palette cleanly.
             window.__rerollHeroArt = function () {
