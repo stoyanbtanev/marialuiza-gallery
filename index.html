@@ -75,6 +75,7 @@
 
         html {
             scroll-behavior: initial;
+            overflow-x: hidden;
         }
 
         body {
@@ -108,7 +109,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100svh;
             background-color: var(--bg-color);
             z-index: 9999;
@@ -182,8 +183,6 @@
         .menu-btn span:nth-child(2) { top: 50%; transform: translateY(-50%); width: 65%; right: 0; left: auto; }
         .menu-btn span:nth-child(3) { bottom: 0; }
 
-        .menu-btn:hover span:nth-child(2) { width: 100%; }
-
         .menu-btn.active span {
             transition: top 0.35s cubic-bezier(0.65, 0, 0.35, 1),
                         bottom 0.35s cubic-bezier(0.65, 0, 0.35, 1),
@@ -200,7 +199,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100svh;
             background-color: rgba(10, 10, 10, 0.98);
             z-index: 99;
@@ -669,9 +668,16 @@
         }
 
         .artist-img {
-            position: sticky;
-            top: 100px;
-            align-self: start;
+            position: relative;
+            top: auto;
+        }
+
+        @media (min-width: 993px) {
+            .artist-img {
+                position: sticky;
+                top: 100px;
+                align-self: start;
+            }
         }
 
         .cv-section-title {
@@ -1122,7 +1128,6 @@
         /* Responsive */
         @media (max-width: 992px) {
             .intro, .artist { grid-template-columns: 1fr; gap: 3rem; }
-            .artist-img { position: relative; top: auto; }
             .gallery-film { grid-template-columns: 1fr; }
             .masonry-grid { column-count: 2; }
             .features-showcase { grid-template-columns: 1fr; }
@@ -1265,7 +1270,7 @@
                 left: 0.75rem;
                 right: auto;
                 bottom: 0.75rem;
-                width: calc(100vw - 1.5rem);
+                width: calc(100% - 1.5rem);
                 max-width: 340px;
             }
             .scroll-top-btn {
@@ -1287,7 +1292,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
+            width: 100%;
             height: 100svh;
             background: rgba(0,0,0,0.95);
             z-index: 2000;
