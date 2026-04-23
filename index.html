@@ -1199,6 +1199,8 @@
         [data-theme="light"] .menu-overlay { background-color: var(--overlay-nav); }
         [data-theme="light"] .hero-description { color: var(--text-dim); }
         [data-theme="light"] .intro-text .quote { color: #2a251c; }
+        .artist-cv > p { color: #ccc; }
+        [data-theme="light"] .artist-cv > p { color: #2a241a; }
         [data-theme="light"] .features-header p { color: var(--text-dim); }
 
         [data-theme="light"] .feature-card {
@@ -1638,7 +1640,7 @@
                 <h2 class="gsap-fade-up">Ангел Гешев</h2>
                 <span class="subtitle gsap-fade-up">Художник & Основател</span>
 
-                <p class="gsap-fade-up" style="margin-bottom: 2rem; font-weight: 300; color: #ccc;">
+                <p class="gsap-fade-up" style="margin-bottom: 2rem; font-weight: 300;">
                     1962 г. – Роден в Пловдив, България.<br>
                     1981 г. – Завършва ССХУ за Сценични кадри, Пловдив.<br>
                     1993 г. – Завършва МГАХИ „Суриков”, Москва, катедра „Графика”, магистър.<br>
@@ -2270,7 +2272,22 @@
             const heroSection = document.querySelector('.hero');
             if (heroSection) {
                 heroSection.style.cursor = 'pointer';
+                let tStartX = 0, tStartY = 0, tStartT = 0, tMoved = false, tActive = false;
+                heroSection.addEventListener('touchstart', (e) => {
+                    const t = e.touches[0];
+                    tStartX = t.clientX; tStartY = t.clientY;
+                    tStartT = Date.now(); tMoved = false; tActive = true;
+                }, { passive: true });
+                heroSection.addEventListener('touchmove', (e) => {
+                    const t = e.touches[0];
+                    if (Math.abs(t.clientX - tStartX) > 10 || Math.abs(t.clientY - tStartY) > 10) tMoved = true;
+                }, { passive: true });
                 heroSection.addEventListener('click', () => {
+                    if (tActive) {
+                        const dt = Date.now() - tStartT;
+                        tActive = false;
+                        if (tMoved || dt > 600) return;
+                    }
                     cancelAnimationFrame(artAnimId);
                     initGenerativeArt();
                     animateGenerativeArt();
