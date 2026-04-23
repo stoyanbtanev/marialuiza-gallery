@@ -1151,12 +1151,111 @@
         @media (max-width: 768px) {
             .masonry-grid { column-count: 1; }
             .hero { min-height: 100vh; padding-top: 0; }
+            nav {
+                top: 0.75rem;
+                left: 0.75rem;
+                width: calc(100% - 1.5rem);
+                padding: 0.85rem 1rem;
+                border-radius: 18px;
+                background: rgba(255, 250, 240, 0.84);
+                border: 1px solid rgba(212, 175, 55, 0.22);
+                box-shadow: 0 16px 34px rgba(46, 36, 18, 0.12);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
+                mix-blend-mode: normal;
+            }
+            .nav-logo {
+                display: inline-flex;
+                align-items: center;
+                max-width: calc(100% - 4.75rem);
+            }
+            .nav-logo img {
+                height: 34px;
+                width: auto;
+                max-width: 190px;
+                object-position: left center;
+            }
+            .menu-overlay {
+                align-items: flex-start;
+                justify-content: flex-start;
+                padding: 6.5rem 1.25rem 2rem;
+                background: rgba(9, 9, 9, 0.96);
+            }
+            .menu-links {
+                width: 100%;
+                text-align: left;
+                padding: 0;
+            }
+            .menu-links li {
+                margin: 0 0 0.85rem;
+            }
+            .menu-links a {
+                display: block;
+                width: 100%;
+                padding: 0.95rem 1rem;
+                font-size: 1.25rem;
+                letter-spacing: 0.08em;
+                border: 1px solid rgba(212, 175, 55, 0.16);
+                border-radius: 14px;
+                background: rgba(255, 255, 255, 0.03);
+            }
+            .menu-btn {
+                width: 48px;
+                height: 48px;
+                padding: 0;
+                border-radius: 14px;
+                background: rgba(255, 255, 255, 0.28);
+                border: 1px solid rgba(212, 175, 55, 0.2);
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                mix-blend-mode: normal;
+            }
+            .menu-btn span {
+                width: 20px;
+                left: 50%;
+                margin-left: -10px;
+                background: #16130d;
+            }
+            .menu-btn span:nth-child(2) {
+                width: 14px;
+                left: 50%;
+                right: auto;
+                margin-left: -7px;
+            }
             .features { padding: 4.5rem 2rem; }
             .features-header h2 { font-size: 2.1rem; }
             .feature-highlight { min-height: 340px; padding: 1.5rem; }
             .feature-highlight h3 { font-size: 1.6rem; }
             .features-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .artist {
+                gap: 2rem;
+                margin-top: 5rem;
+            }
+            .artist-img img {
+                max-height: 320px;
+                object-fit: cover;
+            }
+            .artist-cv h2 {
+                font-size: 2rem;
+            }
+            .artist-cv .subtitle {
+                margin-bottom: 1.75rem;
+                letter-spacing: 0.12em;
+                font-size: 0.78rem;
+            }
+            .artist-cv > p,
+            .cv-section-title,
+            .cv-item {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .cv-section-title {
+                margin: 2.2rem 0 1.1rem;
+                font-size: 1.15rem;
+                line-height: 1.3;
+            }
             .hero-socials.is-floating,
             .hero-socials.is-footer {
                 left: 1rem;
@@ -1539,7 +1638,6 @@
             .theme-toggle { right: 1rem; bottom: 4.75rem; width: 58px; height: 58px; }
             .theme-toggle .orb { width: 32px; height: 32px; }
 
-            .menu-btn { width: 26px; height: 18px; }
             .menu-btn span { height: 1.5px; }
 
             .cv-timeline {
@@ -2160,7 +2258,8 @@
             } else if (footerRect.top < window.innerHeight) {
                 heroSocials.classList.remove('is-floating');
                 heroSocials.classList.add('is-footer');
-                const topPos = footerRect.top - socialHeight - 20;
+                const bottomOffset = window.innerWidth <= 768 ? 18 : 24;
+                const topPos = footerRect.bottom - socialHeight - bottomOffset;
                 heroSocials.style.top = `${Math.max(topPos, 10)}px`;
             } else {
                 heroSocials.classList.remove('is-footer');
@@ -2247,6 +2346,10 @@
             const isMobile = window.matchMedia('(max-width: 768px)').matches;
             const fadeUps = document.querySelectorAll('.gsap-fade-up');
             fadeUps.forEach(elem => {
+                if (isMobile && elem.closest('#artist')) {
+                    gsap.set(elem, { clearProps: 'all', opacity: 1, y: 0 });
+                    return;
+                }
                 // On mobile, skip per-item fade-up for cv-items to avoid
                 // stacking dozens of ScrollTriggers (causes scroll jank on
                 // Chrome/Firefox Android; Safari tolerates it).
