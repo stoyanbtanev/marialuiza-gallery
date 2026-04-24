@@ -907,28 +907,28 @@
         .cookie-bar {
             position: fixed;
             bottom: 1rem;
-            left: 1rem;
-            width: min(340px, calc(100vw - 2rem));
+            left: 50%;
+            transform: translateX(-50%) translateY(calc(100% + 2rem));
+            width: min(420px, calc(100vw - 2rem));
             background: linear-gradient(180deg, rgba(22, 22, 22, 0.96) 0%, rgba(12, 12, 12, 0.96) 100%);
             backdrop-filter: blur(18px) saturate(140%);
             -webkit-backdrop-filter: blur(18px) saturate(140%);
-            padding: 0.95rem 1rem 0.9rem;
+            padding: 0.75rem 0.9rem 0.7rem;
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            gap: 0.65rem;
+            gap: 0.45rem;
             z-index: 1000;
             border: 1px solid rgba(192, 57, 43, 0.18);
             border-radius: 14px;
             box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-            transform: translateY(calc(100% + 2rem));
             opacity: 0;
             pointer-events: none;
             transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
         }
 
         .cookie-bar.show {
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
             opacity: 1;
             pointer-events: auto;
         }
@@ -943,12 +943,12 @@
         .cookie-title {
             font-family: var(--font-heading);
             color: var(--accent-color);
-            font-size: 0.98rem;
-            margin-bottom: 0.2rem;
+            font-size: 0.88rem;
+            margin-bottom: 0.15rem;
             letter-spacing: 0.2px;
             display: flex;
             align-items: center;
-            gap: 0.45rem;
+            gap: 0.4rem;
         }
 
         .cookie-title::before {
@@ -980,22 +980,22 @@
         }
 
         .cookie-text {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: #b0b0b0;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .cookie-links {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.4rem 0.9rem;
-            font-size: 0.75rem;
+            gap: 0.3rem 0.7rem;
+            font-size: 0.7rem;
         }
 
         .cookie-links a,
         .cookie-manage {
             color: var(--accent-color);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             border-bottom: 1px solid rgba(192, 57, 43, 0.3);
             background: none;
             border-top: none;
@@ -1014,8 +1014,8 @@
         .cookie-preferences {
             display: none;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 0.6rem;
-            gap: 0.35rem;
+            padding-top: 0.45rem;
+            gap: 0.2rem;
         }
 
         .cookie-preferences.open {
@@ -1025,9 +1025,9 @@
         .cookie-option {
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: 0.6rem;
+            gap: 0.45rem;
             align-items: center;
-            padding: 0.4rem 0;
+            padding: 0.25rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
@@ -1043,7 +1043,7 @@
         .cookie-option strong {
             display: block;
             color: #fff;
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             font-weight: 600;
         }
 
@@ -1076,17 +1076,17 @@
         .cookie-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.4rem;
+            gap: 0.35rem;
         }
 
         .cookie-btn {
             background: var(--accent-color);
             color: #1a1a1a;
             border: 1px solid transparent;
-            padding: 0.55rem 0.7rem;
+            padding: 0.4rem 0.6rem;
             font-family: var(--font-body);
             font-weight: 600;
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             cursor: pointer;
             border-radius: 8px;
             transition: var(--transition);
@@ -1104,8 +1104,8 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             font-weight: 500;
             grid-column: auto;
-            font-size: 0.74rem;
-            padding: 0.5rem 0.5rem;
+            font-size: 0.68rem;
+            padding: 0.38rem 0.4rem;
         }
 
         .cookie-btn-secondary:hover {
@@ -1147,6 +1147,53 @@
         .scroll-top-btn:hover {
             background: rgba(25, 25, 25, 0.98);
             border-color: rgba(192, 57, 43, 0.48);
+        }
+
+        /* Cookie Settings Button (above socials) */
+        .cookie-settings-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(192, 57, 43, 0.28);
+            background: rgba(12, 12, 12, 0.75);
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.35s ease;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(6px);
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0;
+        }
+        .cookie-settings-btn:hover {
+            background: var(--accent-color);
+            color: #1a1a1a;
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(192, 57, 43, 0.25);
+        }
+        .cookie-settings-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        [data-theme="light"] .cookie-settings-btn {
+            background: rgba(252, 247, 236, 0.85);
+            border-color: var(--accent-glow);
+            box-shadow: 0 8px 22px var(--shadow-soft);
+            color: #6b5b2e;
+        }
+        [data-theme="light"] .cookie-settings-btn:hover {
+            background: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
         }
 
         /* Hero / Floating / Footer Socials */
@@ -1366,27 +1413,48 @@
             }
             .hero-socials {
                 top: auto;
-                left: 1rem;
-                bottom: 1rem;
+                left: 0.75rem;
+                bottom: 0.75rem;
             }
             .hero-socials a {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
             .hero-socials svg {
-                width: 18px;
-                height: 18px;
+                width: 16px;
+                height: 16px;
             }
-            .hero-subtitle { font-size: 0.9rem; }
-            .hero-description { font-size: 0.98rem; }
+            .cookie-settings-btn {
+                width: 34px;
+                height: 34px;
+            }
+            .cookie-settings-btn svg {
+                width: 15px;
+                height: 15px;
+            }
+            .hero-subtitle { font-size: 0.78rem; letter-spacing: 3px; }
+            .hero-description { font-size: 0.88rem; }
             .gallery-film-copy { text-align: center; padding: 0; }
-            .intro-text h2 { font-size: 2.2rem; }
+            .intro-text h2 { font-size: 1.7rem; }
+            .gallery-section h2 { font-size: 1.8rem; margin-bottom: 2.5rem; }
+            .gallery-film-copy h3 { font-size: 1.4rem; }
+            .gallery-film-copy p { font-size: 0.88rem; }
+            .feature-card h3 { font-size: 1.2rem; }
+            .feature-card p { font-size: 0.88rem; }
+            .feature-highlight h3 { font-size: 1.4rem; }
+            .features-note { font-size: 0.85rem; }
+            .artist-cv h2 { font-size: 1.6rem; }
+            .cv-section-title { font-size: 1rem; margin: 1.6rem 0 0.8rem; }
+            .cv-item { margin-bottom: 1.4rem; font-size: 0.88rem; }
+            section { padding: 4rem 1.25rem; }
+            footer { padding: 2.5rem 1.25rem 1.25rem; }
+            .footer-col h3 { font-size: 1rem; }
+            .footer-col p, .footer-col a { font-size: 0.85rem; }
             .cookie-bar {
-                left: 0.75rem;
-                right: auto;
+                left: 50%;
                 bottom: 0.75rem;
                 width: calc(100% - 1.5rem);
-                max-width: 340px;
+                max-width: 380px;
             }
             .scroll-top-btn {
                 left: 50%;
@@ -1396,7 +1464,7 @@
                 width: 50px;
                 height: 50px;
             }
-            .feature-card, .cookie-bar, .theme-toggle, nav, .hero-socials a {
+            .feature-card, .cookie-bar, .theme-toggle, nav, .hero-socials a, .cookie-settings-btn {
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
             }
@@ -1477,7 +1545,7 @@
         body, nav, section, footer, header.hero,
         .menu-overlay, .feature-card, .feature-highlight, .gallery-film,
         .footer-map-card, .footer-map-frame, .cookie-bar, .cookie-close,
-        .cookie-btn, .cookie-option, .cookie-preferences,
+        .cookie-btn, .cookie-option, .cookie-preferences, .cookie-settings-btn,
         .scroll-top-btn, .cv-timeline,
         .intro-image, .masonry-item, .mouse, .wheel,
         .hero-logo-large, .nav-logo img, .loader-logo, .footer-col img,
@@ -1839,6 +1907,9 @@
     </div>
 
     <div class="hero-socials" id="heroSocials">
+        <button class="cookie-settings-btn" id="cookieSettingsBtn" type="button" aria-label="Настройки за бисквитки" title="Бисквитки">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 14a2 2 0 0 0-1.5-1.3 1.7 1.7 0 0 1-1.2-1.2A2 2 0 0 0 17 10a2 2 0 0 0-1-1.7 2 2 0 0 0-1.3-1.5 1.7 1.7 0 0 1-1.2-1.2A2 2 0 0 0 12 4a2 2 0 0 0-2 1.1 2 2 0 0 0-1.5 1.3A2 2 0 0 0 7 8a2 2 0 0 0-1.7 1A2 2 0 0 0 4 10.5 1.7 1.7 0 0 1 3 12a10 10 0 1 0 18.8 2Z"/><circle cx="7.5" cy="12.5" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/></svg>
+        </button>
         <a href="https://www.facebook.com/Marialuizagallery/" target="_blank" rel="noopener" aria-label="Facebook">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
         </a>
@@ -2173,6 +2244,7 @@
         const cookieRejectBtn = document.getElementById('cookieRejectBtn');
         const cookieSaveBtn = document.getElementById('cookieSaveBtn');
         const cookieDismiss = document.getElementById('cookieDismiss');
+        const cookieSettingsBtn = document.getElementById('cookieSettingsBtn');
         const cookieFunctional = document.getElementById('cookieFunctional');
         const cookieAnalytics = document.getElementById('cookieAnalytics');
         const cookieMarketing = document.getElementById('cookieMarketing');
@@ -2307,6 +2379,9 @@
         cookieDismiss.addEventListener('click', () => {
             cookieDismissed = true;
             closeCookieBar();
+        });
+        cookieSettingsBtn.addEventListener('click', () => {
+            openCookieBar();
         });
         scrollTopBtn.addEventListener('click', () => scrollToTarget(0, { duration: 1.1 }));
         let scrollRafPending = false;
