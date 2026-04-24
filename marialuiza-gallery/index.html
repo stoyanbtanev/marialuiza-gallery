@@ -634,6 +634,100 @@
             border-bottom: 1px solid rgba(192, 57, 43, 0.4);
         }
 
+        .google-rating {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        .google-rating-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at top left, var(--accent-dim), transparent 34%),
+                linear-gradient(135deg, var(--surface), rgba(255, 255, 255, 0.015));
+            box-shadow: 0 20px 55px var(--shadow-soft);
+        }
+
+        .google-rating-kicker {
+            display: inline-block;
+            margin-bottom: 0.7rem;
+            color: var(--accent-color);
+            font-size: 0.75rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .google-rating-card h2 {
+            font-size: clamp(1.9rem, 4vw, 3rem);
+            margin-bottom: 0.65rem;
+        }
+
+        .google-rating-card p {
+            max-width: 640px;
+            color: var(--text-dim);
+        }
+
+        .google-rating-score {
+            flex: 0 0 auto;
+            display: grid;
+            justify-items: center;
+            gap: 0.55rem;
+            min-width: 180px;
+            padding: 1.4rem 1.6rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .google-rating-stars {
+            color: #f4c84a;
+            font-size: 1.5rem;
+            letter-spacing: 0.12em;
+            line-height: 1;
+            text-shadow: 0 0 18px rgba(244, 200, 74, 0.25);
+        }
+
+        .google-rating-value {
+            font-family: var(--font-heading);
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        .google-rating-source {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .google-rating-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+            color: var(--accent-color);
+            font-size: 0.92rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        @media (max-width: 768px) {
+            .google-rating-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.5rem;
+            }
+
+            .google-rating-score {
+                width: 100%;
+            }
+        }
+
         /* Gallery Section */
         .gallery-section {
             text-align: center;
@@ -1151,6 +1245,12 @@
             transform: translate(-50%, 0);
         }
 
+        .scroll-top-btn.footer-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 20px);
+        }
+
         .scroll-top-btn:hover {
             background: rgba(25, 25, 25, 0.98);
             border-color: rgba(192, 57, 43, 0.48);
@@ -1253,6 +1353,13 @@
             height: 20px;
             fill: currentColor;
             flex-shrink: 0;
+        }
+
+        .hero-socials.footer-hidden,
+        .theme-toggle.footer-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(18px);
         }
 
         [data-theme="light"] .hero-socials a {
@@ -1960,6 +2067,22 @@
         </div>
     </section>
 
+    <section class="google-rating container" aria-label="Google рейтинг">
+        <div class="google-rating-card gsap-fade-up">
+            <div>
+                <span class="google-rating-kicker">Оценено от посетители</span>
+                <h2>5-звездно преживяване в Google</h2>
+                <p>Гостите на Maria Luiza Gallery оценяват атмосферата, изкуството и бохемския дух на мястото с най-висока оценка.</p>
+                <a class="google-rating-link" href="https://www.google.com/maps/place/Maria+Luiza+gallery,+Plovdiv" target="_blank" rel="noopener">Вижте отзивите в Google ↗</a>
+            </div>
+            <div class="google-rating-score" aria-label="5 от 5 звезди в Google">
+                <div class="google-rating-stars" aria-hidden="true">★★★★★</div>
+                <div class="google-rating-value">5.0</div>
+                <div class="google-rating-source">Google Reviews</div>
+            </div>
+        </div>
+    </section>
+
     <!-- Gallery Section -->
     <section id="gallery" class="gallery-section container">
         <h2>Атмосфера & Изкуство</h2>
@@ -2319,6 +2442,16 @@
             scrollTopBtn.classList.toggle('show', shouldShow);
         }
 
+        function updateFloatingControlsVisibility() {
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const distanceFromBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+            const shouldHide = isMobile && distanceFromBottom < 220;
+
+            heroSocials.classList.toggle('footer-hidden', shouldHide);
+            themeToggle.classList.toggle('footer-hidden', shouldHide);
+            scrollTopBtn.classList.toggle('footer-hidden', shouldHide);
+        }
+
         function toggleMenu() {
             menuOpen = !menuOpen;
             if(menuOpen) {
@@ -2370,6 +2503,7 @@
             scrollRafPending = true;
             requestAnimationFrame(() => {
                 updateScrollTopVisibility();
+                updateFloatingControlsVisibility();
                 scrollRafPending = false;
             });
         }, { passive: true });
@@ -2390,6 +2524,8 @@
             const isLight = document.documentElement.getAttribute('data-theme') === 'light';
             applyTheme(isLight ? 'dark' : 'light');
         });
+        window.addEventListener('resize', updateFloatingControlsVisibility, { passive: true });
+        updateFloatingControlsVisibility();
         // React to system changes only if user hasn't set a preference
         window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
             try {
